@@ -181,7 +181,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	@Nullable
 	private volatile String[] frozenBeanDefinitionNames;
 
-	/** Whether bean definition metadata may be cached for all beans. */
+	/**
+	 * 是否允许缓存所有bean的元数据
+	 *  Whether bean definition metadata may be cached for all beans.
+	 */
 	private volatile boolean configurationFrozen = false;
 
 
