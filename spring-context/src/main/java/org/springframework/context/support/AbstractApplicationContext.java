@@ -572,6 +572,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			/**
 			 * Tell the subclass to refresh the internal bean factory.
 			 * 告诉子类刷新内部工厂
+			 *  实际是调用子类AbstractRefreshableApplicationContext
+			 *  中的refreshBeanFactory方法
+			 *  (這個在spring-web中调用到)
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
@@ -591,7 +594,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				/**
 				 * Invoke factory processors registered as beans in the context.
-				 * 调用在工厂中注册的后置处理器
+				 * 调用在工厂中注册的后置处理器,这个是Spring的第一个扩展点
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -715,6 +718,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		/**
+		 * 实际是调用子类AbstractRefreshableApplicationContext
+		 * 中的refreshBeanFactory方法
+		 */
 		refreshBeanFactory();
 		return getBeanFactory();
 	}

@@ -34,11 +34,16 @@ import org.springframework.util.Assert;
  *
  * <p>Allows for registering classes one by one using {@link #register(Class...)}
  * as well as for classpath scanning using {@link #scan(String...)}.
+ * 允许使用{@link #register（Class ...）} 一对一地注册类，以及使用{@link #scan（String ...）}进行类路径扫描。
  *
  * <p>In case of multiple {@code @Configuration} classes, {@link Bean @Bean} methods
  * defined in later classes will override those defined in earlier classes. This can
  * be leveraged to deliberately override certain bean definitions via an extra
  * {@code @Configuration} class.
+ *
+ * 如果有多个{@code @Configuration}类，则以后的类中定义的{@link Bean @Bean}
+ * 方法*将覆盖先前的类中定义的方法。
+ * 可以通过一个额外的{@code @Configuration}类来故意重写某些bean的定义。
  *
  * <p>See {@link Configuration @Configuration}'s javadoc for usage examples.
  *

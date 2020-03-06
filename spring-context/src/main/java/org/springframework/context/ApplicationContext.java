@@ -86,6 +86,8 @@ public interface ApplicationContext extends EnvironmentCapable, ListableBeanFact
 	/**
 	 * Return the parent context, or {@code null} if there is no parent
 	 * and this is the root of the context hierarchy.
+	 * 返回父上下文，如果没有父，则返回{@code null}，这是上下文层次结构的根。
+	 *
 	 * @return the parent context, or {@code null} if there is no parent
 	 */
 	@Nullable
