@@ -163,6 +163,14 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		this.registry = registry;
 
 		if (useDefaultFilters) {
+
+			/**
+			 * 注册带有@Component的注解，并自动注册
+			 * @service
+			 * @repostory
+			 * @controllor
+			 * 等注解的过滤器
+			 */
 			registerDefaultFilters();
 		}
 		setEnvironment(environment);
@@ -370,6 +378,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	/**
 	 * Get the Environment from the given registry if possible, otherwise return a new
 	 * StandardEnvironment.
+	 *
+	 * 如果可能，从给定的注册表中获取环境，否则返回一个新的StandardEnvironment。
 	 */
 	private static Environment getOrCreateEnvironment(BeanDefinitionRegistry registry) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");

@@ -421,8 +421,34 @@ public class ContextLoader {
 		}
 
 		wac.setServletContext(sc);
+		/**
+		 *
+		 *  configLocationParam 的值是调用 sc.getInitParameter(CONFIG_LOCATION_PARAM);
+		 * 			 * 获取的，CONFIG_LOCATION_PARAM的值是 "contextConfigLocation" ，
+		 * 			 * 对于 "contextConfigLocation" 有印象吗？回顾我们的 web.xml 配置文件中可以看到，
+		 * 			 * 我们配置了一个 <context-param> 上下文参数，这个参数名便是 contextConfigLocation ，
+		 * 			 * 而其值是便是我们自定义的 Spring 配置文件路径
+		 * <web-app>
+		 *     <context-param>
+		 *         <param-name>contextConfigLocation</param-name>
+		 *         <param-value>classpath:spring.xml</param-value>
+		 *     </context-param>
+		 *     <-- ContextLoaderListener ->
+		 *     <listener>
+		 *         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		 *     </listener>
+		 *     <-- DispatcherServlet -->
+		 *     ...
+		 * </web-app>
+		 *
+		 * 所以这是获取我们定制资源的类路径
+		 */
 		String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);
 		if (configLocationParam != null) {
+
+			/**
+			 *我们自定义的 Spring 配置文件路径
+			 */
 			wac.setConfigLocation(configLocationParam);
 		}
 
@@ -435,10 +461,14 @@ public class ContextLoader {
 		}
 
 		/**
+		 *
+		 */
+		customizeContext(sc, wac);
+
+		/**
 		 * 在这里我们要关注的是最后一行 wac.refresh() ，意思是调用容器的 refresh() 方法，
 		 * 此处我们的容器是XmlWebApplicationContext，对应的 refresh() 在其父类 AbstractApplicationContext
 		 */
-		customizeContext(sc, wac);
 		wac.refresh();
 	}
 

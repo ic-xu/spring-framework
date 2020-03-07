@@ -163,9 +163,17 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	/**
 	 * Parse the elements at the root level in the document:
 	 * "import", "alias", "bean".
+	 * 在文档的根级别上解析元素：*“ import”，“ alias”，“ bean”。
+	 *
 	 * @param root the DOM root element of the document
 	 */
 	protected void parseBeanDefinitions(Element root, BeanDefinitionParserDelegate delegate) {
+		/**
+		 * isDefaultNamespaces 方法是判断元素是否属于默认的 Namespace ，
+		 * 通过跟踪可知，这个默认的 Namespace 是指 <beans> 标签，
+		 * 我们知道在spring的配置文件中，对bean的定义是放在 <beans> 标签里边的，
+		 * 所以接下来的 parseDefaultElement 方法则是用于解析 bean 定义的。
+		 */
 		if (delegate.isDefaultNamespace(root)) {
 			NodeList nl = root.getChildNodes();
 			for (int i = 0; i < nl.getLength(); i++) {
@@ -173,6 +181,10 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 				if (node instanceof Element) {
 					Element ele = (Element) node;
 					if (delegate.isDefaultNamespace(ele)) {
+						/**
+						 * 调用本类的解析方法，其实就是解析<beans>
+						 *     bean 都是定义在<beans>里面的
+						 */
 						parseDefaultElement(ele, delegate);
 					}
 					else {
@@ -186,16 +198,26 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		}
 	}
 
+	/**
+	 * 所以接下来的 parseDefaultElement 方法则是用于解析 bean 定义的
+	 * @param ele
+	 * @param delegate
+	 */
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
+
+		/** 处理<import>标签 **/
 		if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
 			importBeanDefinitionResource(ele);
 		}
+		/** 处理<alias>标签 **/
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
 			processAliasRegistration(ele);
 		}
+		/** 处理<bean>标签 **/
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
 			processBeanDefinition(ele, delegate);
 		}
+		/** 处理<beans>标签 **/
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
 			doRegisterBeanDefinitions(ele);
@@ -303,11 +325,29 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * and registering it with the registry.
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+		/**
+		 * 调用BeanDefinitionParserDelegate的parseBeanDefinitionElement方法
+		 * 返回一个包含BeanDefinition信息的BeanDefinitionHolder实例
+		 * parseBeanDefinitionElement()的方法是把ele节点数据转化为BeanDefinitionHolder对象
+		 * 这个方法是解析的重点方法
+		 *
+		 */
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		if (bdHolder != null) {
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
-				// Register the final decorated instance.
+				/**
+				 * 所谓的注册，其实就是把BeanDefintion存储到IOC容器中，
+				 * 我们进入到 registerBeanDefinition 中看一看是如何实现的。
+				 *这里最终调用的是 registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition())
+				 * 其中 registry 是 DefaultListableBeanFactory 的实例。
+				 *
+				 *
+				 * Register the final decorated instance.
+				 * 注册BeanDefinition
+				 * 传入的参数是刚刚获取到的BeanDefinitionHolder对象，再加上DefaultListableBeanFactory对象
+				 * DefaultListableBeanFactory对象的由来需要追溯到AbstractRefreshableApplicationContext的refreshBeanFactory()方法中
+				 */
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}
 			catch (BeanDefinitionStoreException ex) {

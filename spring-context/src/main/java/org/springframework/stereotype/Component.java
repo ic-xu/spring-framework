@@ -33,11 +33,11 @@ import java.lang.annotation.Target;
  * {@link org.aspectj.lang.annotation.Aspect @Aspect} annotation.
  *
  * @author Mark Fisher
- * @since 2.5
  * @see Repository
  * @see Service
  * @see Controller
  * @see org.springframework.context.annotation.ClassPathBeanDefinitionScanner
+ * @since 2.5
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -48,7 +48,11 @@ public @interface Component {
 	/**
 	 * The value may indicate a suggestion for a logical component name,
 	 * to be turned into a Spring bean in case of an autodetected component.
+	 * <p>
+	 * 该值可能表示建议将逻辑组件名称在自动检测到组件的情况下转换为Spring bean。
+	 *
 	 * @return the suggested component name, if any (or empty String otherwise)
+	 * 建议的组件名称（如果有）（否则为空String）
 	 */
 	String value() default "";
 

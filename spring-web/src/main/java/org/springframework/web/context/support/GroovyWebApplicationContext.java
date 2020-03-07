@@ -41,6 +41,9 @@ import org.springframework.lang.Nullable;
  * <p>By default, the configuration will be taken from "/WEB-INF/applicationContext.groovy"
  * for the root context, and "/WEB-INF/test-servlet.groovy" for a context with the namespace
  * "test-servlet" (like for a DispatcherServlet instance with the servlet-name "test").
+ * 默认情况下，配置将从“ /WEB-INF/applicationContext.groovy”*获取（用于根上下文），
+ * 从“ /WEB-INF/test-servlet.groovy”获取具有名称空间*“ test-servlet”的上下文（
+ * 例如，对于Servlet名称为“ test”的DispatcherServlet实例）。
  *
  * <p>The config location defaults can be overridden via the "contextConfigLocation"
  * context-param of {@link org.springframework.web.context.ContextLoader} and servlet

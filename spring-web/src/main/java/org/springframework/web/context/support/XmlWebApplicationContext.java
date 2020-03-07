@@ -85,15 +85,24 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 		 */
 		XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(beanFactory);
 
-		// Configure the bean definition reader with this context's
-		// resource loading environment.
+		/**
+		 * Configure the bean definition reader with this context's resource loading environment.
+		 *使用上下文的资源加载环境配置bean definition 阅读器
+		 */
 		beanDefinitionReader.setEnvironment(getEnvironment());
 		beanDefinitionReader.setResourceLoader(this);
 		beanDefinitionReader.setEntityResolver(new ResourceEntityResolver(this));
 
-		// Allow a subclass to provide custom initialization of the reader,
-		// then proceed with actually loading the bean definitions.
+		/**
+		 * Allow a subclass to provide custom initialization of the reader,
+		 *  then proceed with actually loading the bean definitions.
+		 *  允许子类提供阅读器的自定义初始化，然后继续实际加载bean定义。
+		 *  这里为null方法
+		 */
 		initBeanDefinitionReader(beanDefinitionReader);
+		/**
+		 * 加载beanDefinitions
+		 */
 		loadBeanDefinitions(beanDefinitionReader);
 	}
 
@@ -102,6 +111,10 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 	 * definitions of this context. Default implementation is empty.
 	 * <p>Can be overridden in subclasses, e.g. for turning off XML validation
 	 * or using a different XmlBeanDefinitionParser implementation.
+	 *
+	 * 初始化用于加载此上下文的bean 定义的bean定义读取器。默认实现为空。
+	 * <p>可以在子类中覆盖，例如用于关闭XML验证或使用其他XmlBeanDefinitionParser实现。
+	 *
 	 * @param beanDefinitionReader the bean definition reader used by this context
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader#setValidationMode
 	 * @see org.springframework.beans.factory.xml.XmlBeanDefinitionReader#setDocumentReaderClass
@@ -122,9 +135,15 @@ public class XmlWebApplicationContext extends AbstractRefreshableWebApplicationC
 	 * @see #getResourcePatternResolver
 	 */
 	protected void loadBeanDefinitions(XmlBeanDefinitionReader reader) throws IOException {
+		/**
+		 * 获取我们定制的spring 配置资源的路径，其实也就是上一个方法中设置的值
+		 */
 		String[] configLocations = getConfigLocations();
 		if (configLocations != null) {
 			for (String configLocation : configLocations) {
+				/**
+				 * 实际是调用XmlBeanDefinitionReader的loadBeanDefinitions方法
+				 */
 				reader.loadBeanDefinitions(configLocation);
 			}
 		}
