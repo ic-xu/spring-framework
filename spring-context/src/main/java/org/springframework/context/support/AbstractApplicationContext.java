@@ -57,6 +57,7 @@ import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.ResourceLoaderAware;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ApplicationEventMulticaster;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -594,7 +595,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				/**
 				 * Invoke factory processors registered as beans in the context.
-				 * 调用在工厂中注册的后置处理器,这个是Spring的第一个扩展点
+				 * 调用在工厂中注册的后置处理器,这个是Spring的第一个扩展点，这里进去可以看到
+				 * 是解析{@link Configuration} 配置的类解析器等
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -624,7 +626,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				/**
 				 * Check for listener beans and register them.
-				 * 检查侦听器bean并注册它们。
+				 * 检查监听器bean并注册它们。
 				 */
 				registerListeners();
 
@@ -679,18 +681,31 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 		}
 
-		// Initialize any placeholder property sources in the context environment.
+		/**
+		 * Initialize any placeholder property sources in the context environment.
+		 * 在上下文环境中初始化任何占位符属性源。
+		 */
 		initPropertySources();
 
-		// Validate that all properties marked as required are resolvable:
-		// see ConfigurablePropertyResolver#setRequiredProperties
+		/**
+		 *  Validate that all properties marked as required are resolvable:
+		 *  see ConfigurablePropertyResolver#setRequiredProperties
+		 *  验证所有标记为必需的属性都是可解析的
+		 *  具体参见 ConfigurablePropertyResolver#setRequiredProperties
+		 */
 		getEnvironment().validateRequiredProperties();
 
-		// Store pre-refresh ApplicationListeners...
+		/**
+		 *	Store pre-refresh ApplicationListeners...
+		 *  存储预刷新的ApplicationListeners
+		 */
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
 		} else {
-			// Reset local application listeners to pre-refresh state.
+			/**
+			 * Reset local application listeners to pre-refresh state.
+			 * 将本地应用程序侦听器重置为预刷新状态。
+			 */
 			this.applicationListeners.clear();
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
 		}
@@ -729,7 +744,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Configure the factory's standard context characteristics,
 	 * such as the context's ClassLoader and post-processors.
-	 *
+	 * <p>
 	 * 配置工厂的标准上下文特征，例如上下文的ClassLoader和后处理器。
 	 *
 	 * @param beanFactory the BeanFactory to configure
@@ -792,16 +807,26 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
-	 * 实例化并调用所有已注册的BeanFactoryPostProcessor Bean，*遵循显式顺序（如果给定）。
+	 * 实例化并调用所有已注册的BeanFactoryPostProcessor Bean，
+	 * 遵循显式顺序（如果给定）。
 	 *
 	 * <p>Must be called before singleton instantiation.
 	 * 必须在单例实例化之前调用。
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
+		/**
+		 *委托AbstractApplicationContext进行后处理器处理。
+		 * 列入解析 {@link Configuration}配置的类
+		 */
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 
-		// Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
-		// (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		/**
+		 *Detect a LoadTimeWeaver and prepare for weaving, if found in the meantime
+		 * (e.g. through an @Bean method registered by ConfigurationClassPostProcessor)
+		 *
+		 *检测LoadTimeWeaver并准备编织（如果在此期间发现）
+		 * 例如通过ConfigurationClassPostProcessor注册的@Bean方法
+		 */
 		if (beanFactory.getTempClassLoader() == null && beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			beanFactory.setTempClassLoader(new ContextTypeMatchClassLoader(beanFactory.getBeanClassLoader()));

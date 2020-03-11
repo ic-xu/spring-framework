@@ -273,7 +273,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	 *
 	 * @see #registerBeanDefinition
 	 * <p>
-	 * 不执行任何操作：我们只拥有一个内部BeanFactory并依靠调用方*通过我们的公共方法
+	 * 不执行任何操作：我们只拥有一个内部BeanFactory并依靠调用方通过我们的公共方法
 	 * （或BeanFactory的方法）注册Bean。 * @see #registerBeanDefinition
 	 */
 	@Override

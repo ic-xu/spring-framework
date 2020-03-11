@@ -139,17 +139,27 @@ public abstract class AnnotationConfigUtils {
 
 	/**
 	 * Register all relevant annotation post processors in the given registry.
-	 * @param registry the registry to operate on
+	 * 在给定的注册表中注册所有相关的注释后处理器
+	 *
+	 * @param registry the registry to operate on 要运行的注册表
 	 * @param source the configuration source element (already extracted)
 	 * that this registration was triggered from. May be {@code null}.
+	 *              触发此注册的配置源元素（已提取）*。可能为{@code null}。
+	 *
 	 * @return a Set of BeanDefinitionHolders, containing all bean definitions
 	 * that have actually been registered by this call
+	 * 一组BeanDefinitionHolders，包含此调用实际上已注册的所有bean定义
 	 */
 	public static Set<BeanDefinitionHolder> registerAnnotationConfigProcessors(
 			BeanDefinitionRegistry registry, @Nullable Object source) {
 
+//		获取beanFactory
 		DefaultListableBeanFactory beanFactory = unwrapDefaultListableBeanFactory(registry);
 		if (beanFactory != null) {
+			/**
+			 *设置注解解析器（优先级解析器和autoWire解析器）
+			 *
+			 */
 			if (!(beanFactory.getDependencyComparator() instanceof AnnotationAwareOrderComparator)) {
 				beanFactory.setDependencyComparator(AnnotationAwareOrderComparator.INSTANCE);
 			}

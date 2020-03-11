@@ -42,6 +42,9 @@ import org.springframework.lang.Nullable;
 
 /**
  * Delegate for AbstractApplicationContext's post-processor handling.
+ * 委托AbstractApplicationContext进行后处理器处理。
+ *
+ * 后处理器注册代表
  *
  * @author Juergen Hoeller
  * @since 4.0
@@ -67,6 +70,10 @@ final class PostProcessorRegistrationDelegate {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					/**
+					 * 调用ConfigurationClassPostProcessor 的postProcessBeanDefinitionRegistry
+					 * 解析 @Configuration 的类
+					 */
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
 				}
