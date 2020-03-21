@@ -596,7 +596,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				/**
 				 * Invoke factory processors registered as beans in the context.
 				 * 调用在工厂中注册的后置处理器,这个是Spring的第一个扩展点，这里进去可以看到
-				 * 是解析{@link Configuration} 配置的类解析器等
+				 * 是解析{@link Configuration} 配置的类解析器等,它的主要作用是用来程序动态的注册
+				 * bean和修改beanDefinition。
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 
@@ -816,7 +817,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		/**
 		 *委托AbstractApplicationContext进行后处理器处理。
-		 * 列入解析 {@link Configuration}配置的类
+		 * 列如解析 {@link Configuration}配置的类
 		 */
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
 

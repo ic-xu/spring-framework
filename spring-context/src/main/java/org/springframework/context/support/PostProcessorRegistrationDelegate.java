@@ -43,7 +43,7 @@ import org.springframework.lang.Nullable;
 /**
  * Delegate for AbstractApplicationContext's post-processor handling.
  * 委托AbstractApplicationContext进行后处理器处理。
- *
+ * <p>
  * 后处理器注册代表
  *
  * @author Juergen Hoeller
@@ -59,13 +59,16 @@ final class PostProcessorRegistrationDelegate {
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		// 用一个set集合来记录已经执行过的 beanName
 		Set<String> processedBeans = new HashSet<>();
 
+// 1、容器需要具备BeanDefinitionRegistry功能, beanFactoryPostProcessors集合中为容器自身注册的实例, 已知实例集合
 		if (beanFactory instanceof BeanDefinitionRegistry) {
+
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
-
+			// 1.1、优先触发已知实例集合beanFactoryPostProcessors 中 BeanDefinitionRegistryPostProcessor实例
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
@@ -76,12 +79,18 @@ final class PostProcessorRegistrationDelegate {
 					 */
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
 					registryProcessors.add(registryProcessor);
-				}
-				else {
+				} else {
 					regularPostProcessors.add(postProcessor);
 				}
 			}
 
+			/**
+			 * 1.2、 从beanFactory容器中,获取已经加载的BeanDefinitionRegistryPostProcessor实例,并触发回调
+			 *
+			 * 1.2.1、不会实例化FactoryBeans, 而是留到工厂后置类进行处理. 通过beanFactory.getBeanNamesForType 参数 allowEagerInit 为false控制
+			 * 1.2.2、严格遵循顺序, 触发顺序为实现PriorityOrdered->实现Ordered->普通类型接口
+			 * 1.2.3、同PriorityOrdered、Ordered则以getOrder()返回值排序, 越小优先级别越高
+			 */
 			// Do not initialize FactoryBeans here: We need to leave all regular beans
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
@@ -136,9 +145,7 @@ final class PostProcessorRegistrationDelegate {
 			// Now, invoke the postProcessBeanFactory callback of all processors handled so far.
 			invokeBeanFactoryPostProcessors(registryProcessors, beanFactory);
 			invokeBeanFactoryPostProcessors(regularPostProcessors, beanFactory);
-		}
-
-		else {
+		} else {
 			// Invoke factory processors registered with the context instance.
 			invokeBeanFactoryPostProcessors(beanFactoryPostProcessors, beanFactory);
 		}
@@ -156,14 +163,11 @@ final class PostProcessorRegistrationDelegate {
 		for (String ppName : postProcessorNames) {
 			if (processedBeans.contains(ppName)) {
 				// skip - already processed in first phase above
-			}
-			else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
@@ -216,11 +220,9 @@ final class PostProcessorRegistrationDelegate {
 				if (pp instanceof MergedBeanDefinitionPostProcessor) {
 					internalPostProcessors.add(pp);
 				}
-			}
-			else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
+			} else if (beanFactory.isTypeMatch(ppName, Ordered.class)) {
 				orderedPostProcessorNames.add(ppName);
-			}
-			else {
+			} else {
 				nonOrderedPostProcessorNames.add(ppName);
 			}
 		}
