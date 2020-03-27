@@ -586,6 +586,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		// Allow post-processors to modify the merged bean definition.
+		//允许后处理器修改合并的bean定义。
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
@@ -614,12 +615,13 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
-			//调用set方法给我们的对象属性赋值
+			/**
+			 * 调用set方法给我们的对象属性赋值
+			 */
 			populateBean(beanName, mbd, instanceWrapper);
 			/**
 			 * 调用对象的初始化操作,调用后置处理器生成代理对象（这里可能生成代理对象）
 			 */
-
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1444,6 +1446,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (pvs == null) {
 				pvs = mbd.getPropertyValues();
 			}
+			/**
+			 * 调用后置处理器修改bean的行为
+			 * 其中AutowiredAnnotationBeanPostProcessor 是处理@autoWire的
+			 * 而 CommonAnnotationBeanPostProcessor 是处理java公共注解的，比如@Resource,支持java5以上注解
+			 */
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
