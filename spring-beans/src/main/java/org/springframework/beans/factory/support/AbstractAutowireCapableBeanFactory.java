@@ -502,7 +502,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
+			/**
+			 * Give BeanPostProcessors a chance to
+			 * return a proxy instead of the target bean instance.
+			 *
+			 * 通过bean的后置处理器来进行后置处理生成处理对象，但是一般情况下不会生成代理对象，
+			 * 不管是jdk代理还是cglib代理都不会在此处进行代理，应为我们的真是对象还没有生成，
+			 * 所有这里不会生成代理对象，那么在这里不是我们aop和事物的关键，这里解析我们的aop切面信息
+			 * 进行缓存
+			 */
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -514,6 +522,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			/**
+			 * 这里是我们真是生成bean的过程
+			 */
 			Object beanInstance = doCreateBean(beanName, mbdToUse, args);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Finished creating instance of bean '" + beanName + "'");
@@ -548,14 +559,26 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final @Nullable Object[] args)
 			throws BeanCreationException {
 
-		// Instantiate the bean.
+		/**
+		 *  Instantiate the bean.
+		 *  BeanWrapper 是对bean 的包装，其接口中所定义的功能很简单的包括设置获取包装对象，
+		 *  获取bean的属性
+		 */
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
+			/**
+			 * 从没有完成factoryBean中移除
+			 */
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
 		if (instanceWrapper == null) {
+			/**
+			 *使用合适的实例化策略来创建新的实列：工厂方法、构造函数自动注入、简单初始化很重要）
+			 * 它的作用：推断出构造函数，调用构造函数反射生成实列
+			 */
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
+		//从beanWrapper中获取我们早期的对象
 		final Object bean = instanceWrapper.getWrappedInstance();
 		Class<?> beanType = instanceWrapper.getWrappedClass();
 		if (beanType != NullBean.class) {
@@ -591,7 +614,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			//调用set方法给我们的对象属性赋值
 			populateBean(beanName, mbd, instanceWrapper);
+			/**
+			 * 调用对象的初始化操作,调用后置处理器生成代理对象（这里可能生成代理对象）
+			 */
+
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
 		catch (Throwable ex) {
@@ -1785,10 +1813,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
+			//调用bean的后置处理器方法来修改bean的属性或者行为
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
 		try {
+			//执行bean生命周期的回调方法
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {

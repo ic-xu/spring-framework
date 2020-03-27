@@ -26,7 +26,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
  * Indicates the 'role' hint for a given bean.
- *
+ *指示给定bean的“角色”提示。
  * <p>May be used on any class directly or indirectly annotated with
  * {@link org.springframework.stereotype.Component} or on methods
  * annotated with {@link Bean}.
@@ -38,6 +38,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
  * this indicates the role of the configuration class bean definition and
  * does not cascade to all @{@code Bean} methods defined within. This behavior
  * is different than that of the @{@link Lazy} annotation, for example.
+ * 如果{@link Configuration @Configuration}类上存在Role，则表示配置类bean定义的角色，
+ * 并且不会级联到其中定义的所有@ { @ code Bean}方法。例如，此行为*与@ { @ link Lazy}注释的行为不同
  *
  * @author Chris Beams
  * @since 3.1

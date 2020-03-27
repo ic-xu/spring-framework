@@ -89,11 +89,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * AnnotatedBeanDefinitionReader——BeanDefinition解析器用来解析带注解的bean
 	 * ClassPathBeanDefinitionScanner——bean的扫描器 用来扫描类
-	 *
+	 * <p>
 	 * 注册解析传入的配置类（使用类配置的方式进行解析）
 	 * 调用容器的refresh方法初始化容器
 	 * 这里我们用的是最后一种构造函数，即传入一个包路径。
-	 *
 	 */
 
 	private final AnnotatedBeanDefinitionReader reader;
@@ -145,13 +144,27 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 
 		/**
-		 * 第一步：调用无参构造函数，初始化AnnotatedBeanDefinitionReader和 ClassPathBeanDefinitionScanner
-		 * 第二步：
-		 * 第三步：
+		 * 第一步：用父类GenericApplicationContext无参构造函数，初始化一个BeanFactory:
+		 * 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory()
+		 * 第二步：在IOC容器中初始化一个 注解bean读取器AnnotatedBeanDefinitionReader
+		 * 第三步：在IOC容器中初始化一个 按类路径扫描注解bean的 扫描器
 		 */
 		this();
-
+		/**
+		 * 注册bean配置类, AnnotationConfigApplicationContext
+		 * 容器通过AnnotatedBeanDefinitionReader的register方法实现注解bean的读取
+		 *
+		 * register方法重点完成了bean配置类本身的解析和注册，处理过程可以分为以下几个步骤：
+		 * 	第一、根据bean配置类，使用BeanDefinition解析Bean的定义信息，主要是一些注解信息
+		 * 	第二、Bean作用域的处理，默认缺少@Scope注解，解析成单例
+		 * 	第三、借助AnnotationConfigUtils工具类解析通用注解
+		 * 	第四bean定义信息已beanname，beandifine键值对的形式注册到ioc容器中(相当于
+		 * 	this.beanDefinitionMap.put(beanName,beanDefinition))
+		 */
 		register(componentClasses);
+		/**
+		 * 核心方法
+		 */
 		refresh();
 	}
 
