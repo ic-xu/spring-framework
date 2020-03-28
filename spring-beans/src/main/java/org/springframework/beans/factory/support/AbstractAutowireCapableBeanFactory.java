@@ -506,6 +506,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 * Give BeanPostProcessors a chance to
 			 * return a proxy instead of the target bean instance.
 			 *
+			 * resolveBeforeInstantiation 是判断执行
+			 * InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation 的接口方法实现
+			 *
 			 * 通过bean的后置处理器来进行后置处理生成处理对象，但是一般情况下不会生成代理对象，
 			 * 不管是jdk代理还是cglib代理都不会在此处进行代理，应为我们的真是对象还没有生成，
 			 * 所有这里不会生成代理对象，那么在这里不是我们aop和事物的关键，这里解析我们的aop切面信息
@@ -620,7 +623,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 */
 			populateBean(beanName, mbd, instanceWrapper);
 			/**
-			 * 调用对象的初始化操作,调用后置处理器生成代理对象（这里可能生成代理对象）
+			 * 调用对象的初始化操作,实质是调用bean的生命周期回调方法
 			 */
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
 		}
@@ -1820,12 +1823,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
-			//调用bean的后置处理器方法来修改bean的属性或者行为
+			/**
+			 * 调用bean的生命周期回调方法,bean的生命周期回调方法有三种不同的写法，
+			 * 所以这里有两个方法都是调用bean的生命周期回调方法，spring默认存在多种方法，
+			 * 同时存在的其优先级为： 首先执行@postConstruct、然后执行afterPropertiesSet()、
+			 * 最后执行init();这里是执行@postConstruct 的后置处理器
+			 */
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
 		try {
-			//执行bean生命周期的回调方法
+			/**
+			 * 调用bean的生命周期回调方法,bean的生命周期回调方法有三种不同的写法，
+			 * 所以这里有两个方法都是调用bean的生命周期回调方法，spring默认存在多种方法，
+			 * 同时存在的其优先级为： 首先执行@postConstruct、然后执行afterPropertiesSet()、
+			 * 最后执行init();这里是执行接口和xml初始化方法的
+			 */
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
 		catch (Throwable ex) {
@@ -1834,6 +1847,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
+			/**
+			 * 执行后置处理器，包括aop的实现代理等
+			 */
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 

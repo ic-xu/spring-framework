@@ -63,6 +63,12 @@ public interface BeanPostProcessor {
 	 * or a custom init-method). The bean will already be populated with property values.
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>The default implementation returns the given {@code bean} as-is.
+	 *
+	 * 实例化、依赖注入完毕，在调用显示的初始化之前完成一些定制的初始化任务
+	 * 注意：方法返回值不能为null
+	 * 如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
+	 * 因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 *
 	 * @param bean the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;
@@ -88,6 +94,13 @@ public interface BeanPostProcessor {
 	 * {@link InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation} method,
 	 * in contrast to all other {@code BeanPostProcessor} callbacks.
 	 * <p>The default implementation returns the given {@code bean} as-is.
+	 *
+	 *  实例化、依赖注入、初始化完毕时执行
+	 * 	注意：方法返回值不能为null
+	 * 	如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
+	 * 	因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 *
+	 *
 	 * @param bean the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;

@@ -73,16 +73,21 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	/** Cache of singleton objects: bean name to bean instance. */
 	private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
-	/** Cache of singleton factories: bean name to ObjectFactory. */
+	/** Cache of singleton factories: bean name to ObjectFactory.
+	 * 单例工厂的缓存：Bean名称为ObjectFactory。 */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(16);
 
 	/** Cache of early singleton objects: bean name to bean instance. */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
-	/** Set of registered singletons, containing the bean names in registration order. */
+	/** Set of registered singletons, containing the bean names in registration order.
+	 * 注册的单例集，按注册顺序包含Bean名称
+	 */
 	private final Set<String> registeredSingletons = new LinkedHashSet<>(256);
 
-	/** Names of beans that are currently in creation. */
+	/** Names of beans that are currently in creation.
+	 * 当前正在创建的bean的名称
+	 */
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 
@@ -187,8 +192,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		 */
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
+				//earlySingletonObjects缓存，用来提高性能、防止重复创建bean
 				singletonObject = this.earlySingletonObjects.get(beanName);
 				if (singletonObject == null && allowEarlyReference) {
+					/**
+					 *  从一个工厂map容器中拿到工厂，通过工厂去产生一个bean，
+					 *  这个工厂就能提前把aop等后置处理器执行完成，
+					 *  重点：工厂产生的bean是一个完整的bean,包含属性注入和后置处理器处理
+					 */
 					ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
 					if (singletonFactory != null) {
 						singletonObject = singletonFactory.getObject();
@@ -228,7 +239,6 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				}
 				/**
 				 * 标记当前bean正在被创建， 把当前bean加入到正在创建的bean中，这个是循环依赖的基础
-				 *
 				 */
 				beforeSingletonCreation(beanName);
 
@@ -242,8 +252,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					newSingleton = true;
 				}
 				catch (IllegalStateException ex) {
-					// Has the singleton object implicitly appeared in the meantime ->
-					// if yes, proceed with it since the exception indicates that state.
+
+
+					/**
+					 *  Has the singleton object implicitly appeared in the meantime ->
+					 * if yes, proceed with it since the exception indicates that state.
+					 * 在此期间，是否使单例对象隐式出现-> //如果是，请继续处理该对象，因为异常指示该状态。
+					 */
 					singletonObject = this.singletonObjects.get(beanName);
 					if (singletonObject == null) {
 						throw ex;
@@ -261,6 +276,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
+					/**
+					 * 把当前beanName 从正在被创建的列表中移除
+					 */
 					afterSingletonCreation(beanName);
 				}
 				if (newSingleton) {
