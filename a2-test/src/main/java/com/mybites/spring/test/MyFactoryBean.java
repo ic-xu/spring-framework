@@ -1,4 +1,4 @@
-package com.test;
+package com.mybites.spring.test;
 
 import org.springframework.beans.factory.FactoryBean;
 
@@ -13,8 +13,7 @@ public class MyFactoryBean implements FactoryBean {
 
 	@Override
 	public Object getObject() throws Exception {
-		Object o = ProxSessionFactory.queryList(mapperClass);
-		return o;
+		return ProxSessionFactory.createMapper(mapperClass);
 	}
 
 	@Override

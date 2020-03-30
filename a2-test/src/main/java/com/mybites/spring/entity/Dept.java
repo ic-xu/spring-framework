@@ -1,4 +1,4 @@
-package com.entity;
+package com.mybites.spring.entity;
 
 
 public class Dept {

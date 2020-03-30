@@ -1,21 +1,19 @@
-package com.config;
+package com.mybites.spring.config;
 
-import com.test.MyScan;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
 @Configurable
-@ComponentScan("com.*")
-//@MapperScan("com.mapper")
-@MyScan("com.*")
+@ComponentScan("com.mybites.spring.*")
+@MapperScan("com.mybites.spring.mapper")//开启mybatis
+//@MyScan("com.*")//开启自己写的mybatis
 //@ImportResource("")//导入资源
 public class Config {
 

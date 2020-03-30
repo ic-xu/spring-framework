@@ -1,6 +1,6 @@
-package com.mapper;
+package com.mybites.spring.mapper;
 
-import com.entity.Dept;
+import com.mybites.spring.entity.Dept;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

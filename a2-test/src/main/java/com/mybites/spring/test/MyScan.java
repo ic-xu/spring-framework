@@ -1,4 +1,4 @@
-package com.test;
+package com.mybites.spring.test;
 
 import org.springframework.context.annotation.Import;
 

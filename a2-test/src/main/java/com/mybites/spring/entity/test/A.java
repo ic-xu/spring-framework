@@ -1,4 +1,4 @@
-package com.entity.test;
+package com.mybites.spring.entity.test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

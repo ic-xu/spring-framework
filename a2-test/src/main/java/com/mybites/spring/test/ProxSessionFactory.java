@@ -1,11 +1,11 @@
-package com.test;
+package com.mybites.spring.test;
 
 import java.lang.reflect.Proxy;
 
 public class ProxSessionFactory {
 
 
-	public static Object queryList(Class clazz) {
+	public static Object createMapper(Class clazz) {
 
 		/**
 		 *
