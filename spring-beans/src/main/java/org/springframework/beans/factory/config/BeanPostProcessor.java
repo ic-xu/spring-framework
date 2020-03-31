@@ -64,10 +64,12 @@ public interface BeanPostProcessor {
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>The default implementation returns the given {@code bean} as-is.
 	 *
-	 * 实例化、依赖注入完毕，在调用显示的初始化之前完成一些定制的初始化任务
+	 * 实例化、依赖注入完毕，在调用显示的 初始化 之前 完成一些定制的初始化任务
 	 * 注意：方法返回值不能为null
 	 * 如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
 	 * 因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 *
+	 * 	在bean的 初始化方法调用 之前工作
 	 *
 	 * @param bean the new bean instance
 	 * @param beanName the name of the bean
@@ -99,6 +101,8 @@ public interface BeanPostProcessor {
 	 * 	注意：方法返回值不能为null
 	 * 	如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
 	 * 	因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 *
+	 * 	在bean的 初始化方法调用 之后工作
 	 *
 	 *
 	 * @param bean the new bean instance

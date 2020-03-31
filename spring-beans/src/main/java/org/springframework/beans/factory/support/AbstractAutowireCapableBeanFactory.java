@@ -593,6 +593,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
+					/**
+					 * 调用后置处理器的 postProcessMergedBeanDefinition() 方法
+					 */
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
 				catch (Throwable ex) {
@@ -612,6 +615,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.trace("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			/**
+			 * 添加到单列工厂
+			 */
 			addSingletonFactory(beanName, () -> getEarlyBeanReference(beanName, mbd, bean));
 		}
 
@@ -1824,10 +1830,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			/**
-			 * 调用bean的生命周期回调方法,bean的生命周期回调方法有三种不同的写法，
-			 * 所以这里有两个方法都是调用bean的生命周期回调方法，spring默认存在多种方法，
-			 * 同时存在的其优先级为： 首先执行@postConstruct、然后执行afterPropertiesSet()、
-			 * 最后执行init();这里是执行@postConstruct 的后置处理器
+			 *调用bean的类的后置处理器的 初始化前置postProcessBeforeInitialization()法
+			 * 但是后置处理器不能返回null,不然后面的处理器就不能执行
 			 */
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
@@ -1835,9 +1839,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		try {
 			/**
 			 * 调用bean的生命周期回调方法,bean的生命周期回调方法有三种不同的写法，
-			 * 所以这里有两个方法都是调用bean的生命周期回调方法，spring默认存在多种方法，
-			 * 同时存在的其优先级为： 首先执行@postConstruct、然后执行afterPropertiesSet()、
-			 * 最后执行init();这里是执行接口和xml初始化方法的
+			 * 			 * 所以这里有两个方法都是调用bean的生命周期回调方法，spring默认存在多种方法，
+			 * 			 * 同时存在的其优先级为： 首先执行@postConstruct、然后执行afterPropertiesSet()、
+			 * 			 * 最后执行init();
 			 */
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		}
@@ -1848,7 +1852,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
 			/**
-			 * 执行后置处理器，包括aop的实现代理等
+			 * 执行后置处理器的初始化后置postProcessAfterInitialization()方法,
+			 *  但是后置处理器不能返回null,不然后面的处理器就不能执行
 			 */
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
@@ -1878,6 +1883,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * and a chance to know about its owning bean factory (this object).
 	 * This means checking whether the bean implements InitializingBean or defines
 	 * a custom init method, and invoking the necessary callback(s) if it does.
+	 * 现在设置所有bean的属性，让它有机会做出反应，
+	 * 并有机会了解其拥有的bean工厂（此对象）。
+	 * 这意味着检查bean是否实现了InitializingBean或定义了一个自定义的init方法，如果需要，则调用必要的回调。
+	 *
+	 *
 	 * @param beanName the bean name in the factory (for debugging purposes)
 	 * @param bean the new bean instance we may need to initialize
 	 * @param mbd the merged bean definition that the bean was created with
