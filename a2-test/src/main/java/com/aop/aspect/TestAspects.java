@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestAspects {
 
+	public TestAspects(){
+
+		System.out.println("fff");
+	}
+
 	@Pointcut("execution(public String com.aop.test.TestServer.list())") // the pointcut expression
 	private void anyOldTransfer() {} // the pointcut signature
 
