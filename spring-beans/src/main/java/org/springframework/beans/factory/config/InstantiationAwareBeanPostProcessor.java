@@ -27,6 +27,9 @@ import org.springframework.lang.Nullable;
  * and a callback after instantiation but before explicit properties are set or
  * autowiring occurs.
  *
+ * BeanPostProcessor的子接口，它添加了实例化之前的回调，
+ * 以及实例化之后但设置了显式属性或自动装配之前的回调
+ *
  * <p>Typically used to suppress default instantiation for specific target beans,
  * for example to create proxies with special TargetSources (pooling targets,
  * lazily initializing targets, etc), or to implement additional injection strategies

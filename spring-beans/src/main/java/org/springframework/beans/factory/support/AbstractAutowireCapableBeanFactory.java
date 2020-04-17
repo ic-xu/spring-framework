@@ -511,6 +511,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 *
 			 * resolveBeforeInstantiation 是判断执行
 			 * InstantiationAwareBeanPostProcessor.postProcessBeforeInstantiation 的接口方法实现
+			 * 其目的是执行实例化之前的回调方法.
 			 *
 			 * 通过bean的后置处理器来进行后置处理生成处理对象，但是一般情况下不会生成代理对象，
 			 * 不管是jdk代理还是cglib代理都不会在此处进行代理，应为我们的真是对象还没有生成，
@@ -528,6 +529,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+
 			/**
 			 * 这里是我们真是生成bean的过程
 			 */
@@ -993,6 +995,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	/**
 	 * Obtain a reference for early access to the specified bean,
 	 * typically for the purpose of resolving a circular reference.
+	 * 获取用于早期访问指定bean的参考，*通常是为了解决循环参考。
+	 *
 	 * @param beanName the name of the bean (for error handling purposes)
 	 * @param mbd the merged bean definition for the bean
 	 * @param bean the raw bean instance
