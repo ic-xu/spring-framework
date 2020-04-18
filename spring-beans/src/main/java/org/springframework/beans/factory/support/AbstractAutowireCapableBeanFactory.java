@@ -599,7 +599,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.postProcessed) {
 				try {
 					/**
-					 * 调用后置处理器的 postProcessMergedBeanDefinition() 方法
+					 * 调用beanDefinition后置处理器的 postProcessMergedBeanDefinition() 方法
 					 */
 					applyMergedBeanDefinitionPostProcessors(mbd, beanType, beanName);
 				}
@@ -1159,7 +1159,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				if (targetType != null) {
 					/**
 					 * 执行后置处理器的BeforeInstantiation方法，如果返回的结果不为null，就执行后置处理
-					 * 其的AfterInitialization方法
+					 * 其的AfterInitialization方法,
 					 */
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
@@ -1835,6 +1835,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}, getAccessControlContext());
 		}
 		else {
+			/**
+			 *执行spring 中的xxxAware方法,这个是spring提供的感知器方法回调
+			 */
 			invokeAwareMethods(beanName, bean);
 		}
 

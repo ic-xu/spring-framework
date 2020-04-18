@@ -100,6 +100,7 @@ public class AspectJAwareAdvisorAutoProxyCreator extends AbstractAdvisorAutoProx
 		// TODO: Consider optimization by caching the list of the aspect names
 		/**
 		 * 获取增强器，判断每一个增强器是不是AspectJPointcutAdvisor这个类型的
+		 * findCandidateAdvisors() 获取所有的增强器
 		 */
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
 		for (Advisor advisor : candidateAdvisors) {

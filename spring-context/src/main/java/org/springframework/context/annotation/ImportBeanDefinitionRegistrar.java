@@ -51,6 +51,7 @@ import org.springframework.core.type.AnnotationMetadata;
  *
  * <p>See implementations and associated unit tests for usage examples.
  *
+ *
  * @author Chris Beams
  * @author Juergen Hoeller
  * @since 3.1
@@ -58,6 +59,9 @@ import org.springframework.core.type.AnnotationMetadata;
  * @see ImportSelector
  * @see Configuration
  */
+
+/*
+* 动态的给容器中注册组件,注册的是beanDefinition 类型的东西,后期会自动装配成bean*/
 public interface ImportBeanDefinitionRegistrar {
 
 	/**

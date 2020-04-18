@@ -131,7 +131,9 @@ public abstract class AopConfigUtils {
 			}
 			return null;
 		}
-
+		/*创建一个bean的定义信息,这里的source 为null,cls就是我们传入的第一个参数,也就是最后生成bean的参数
+		* 最后注册到registry 中
+		* */
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);
 		beanDefinition.setSource(source);
 		beanDefinition.getPropertyValues().add("order", Ordered.HIGHEST_PRECEDENCE);

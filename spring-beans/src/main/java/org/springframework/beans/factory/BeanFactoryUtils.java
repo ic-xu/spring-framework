@@ -218,6 +218,12 @@ public abstract class BeanFactoryUtils {
 	 * the raw FactoryBean itself will be matched against the type.
 	 * <p>This version of {@code beanNamesForTypeIncludingAncestors} automatically
 	 * includes prototypes and FactoryBeans.
+	 *
+	 * 获取给定类型的所有bean名称，包括在祖先*工厂中定义的名称。如果覆盖了bean定义，将返回唯一名称。
+	 * <p>是否考虑由FactoryBeans创建的对象，这意味着将初始化FactoryBeans 。
+	 * 如果由FactoryBean创建的对象不匹配，则*原始FactoryBean本身将与该类型匹配。
+	 * <p>此版本的{@code beanNamesForTypeIn includedAncestors}自动*包括原型和FactoryBeans。
+	 *
 	 * @param lbf the bean factory
 	 * @param type the type that beans must match (as a {@code Class})
 	 * @return the array of matching bean names, or an empty array if none

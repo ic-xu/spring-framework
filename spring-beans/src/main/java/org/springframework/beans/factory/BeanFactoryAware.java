@@ -38,6 +38,8 @@ import org.springframework.beans.BeansException;
  * @see InitializingBean
  * @see org.springframework.context.ApplicationContextAware
  */
+
+/*对应创建的是哪一个工厂类*/
 public interface BeanFactoryAware extends Aware {
 
 	/**

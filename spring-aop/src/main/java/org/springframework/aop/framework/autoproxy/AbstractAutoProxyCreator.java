@@ -261,9 +261,10 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			 * 				Pointcut.class.isAssignableFrom(beanClass) ||
 			 * 				Advisor.class.isAssignableFrom(beanClass) ||
 			 * 				AopInfrastructureBean.class.isAssignableFrom(beanClass)这些类
-			 * 			和	因不应该跳过
+			 * 			和是否应该跳过(这里会获取到所有的增强器,就是切面的通知方法)
 			 */
 			if (isInfrastructureClass(beanClass) || shouldSkip(beanClass, beanName)) {
+				//如果是切面的元素,则先把切面信息添加到 advisedBeans 中
 				this.advisedBeans.put(cacheKey, Boolean.FALSE);
 				return null;
 			}
@@ -273,7 +274,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		// Suppresses unnecessary default instantiation of the target bean:
 		// The TargetSource will handle target instances in a custom fashion.
 		/**
-		 * 找到原来的对象，
+		 * 找到需要代理的目标类对象，
 		 */
 		TargetSource targetSource = getCustomTargetSource(beanClass, beanName);
 		if (targetSource != null) {
@@ -367,9 +368,14 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		}
 
 		// Create proxy if we have advice.
+		/**找到能应用在当前bean 的所有增强器*/
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
+
+		//获取到的增强器不为null,走if循环
 		if (specificInterceptors != DO_NOT_PROXY) {
+			//把当前bean放在需要处理的代理对象中
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
+			//创建代理对象
 			Object proxy = createProxy(
 					bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
@@ -481,6 +487,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 			}
 		}
 
+		//获取所有的通知方法,让后把通知方法放入到代理工厂中
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		proxyFactory.addAdvisors(advisors);
 		proxyFactory.setTargetSource(targetSource);
@@ -490,7 +497,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyProcessorSupport
 		if (advisorsPreFiltered()) {
 			proxyFactory.setPreFiltered(true);
 		}
-
+//		使用代理工厂创建代理对象
 		return proxyFactory.getProxy(getProxyClassLoader());
 	}
 
