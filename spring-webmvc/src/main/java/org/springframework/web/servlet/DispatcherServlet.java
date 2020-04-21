@@ -993,6 +993,9 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * to find the first that supports the handler class.
 	 * <p>All HTTP methods are handled by this method. It's up to HandlerAdapters or handlers
 	 * themselves to decide which methods are acceptable.
+	 *
+	 * springMvc 的关键入口
+	 *
 	 * @param request current HTTP request
 	 * @param response current HTTP response
 	 * @throws Exception in case of any kind of processing failure
@@ -1009,10 +1012,17 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				/** 检查请求是否附带文件上传信息，其实是检查请求头信息有没有附带二进制文件信息 */
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
+				/** 检测是否有控制器信息，也就是我们常说的 controllor对象执行的方法，怎么做？
+				 *   首先：扫描项目 -> 拿到所有添加了 @Controllor 的类 -> 判断方法是不是添加了 @RequestMapping 注解
+				 *   	-> 把注解的值当作key，把method 当作 value 存入map集合中 -> 根据用户发送的请求拦截用户请求的uri，然后
+				 *   	使用uri请求的值当作key 去map 中获取对应的 method 执行。
+				 *
+				 */
 				mappedHandler = getHandler(processedRequest);
 				if (mappedHandler == null) {
 					noHandlerFound(processedRequest, response);
@@ -1020,6 +1030,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				}
 
 				// Determine handler adapter for the current request.
+				/** 找到一个可以适配当前方法的一个适配器，就是判断当前handle 是那种方式实现的 */
 				HandlerAdapter ha = getHandlerAdapter(mappedHandler.getHandler());
 
 				// Process last-modified header, if supported by the handler.
@@ -1226,10 +1237,14 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>Tries all handler mappings in order.
 	 * @param request current HTTP request
 	 * @return the HandlerExecutionChain, or {@code null} if no handler could be found
+	 *
+	 *  HandlerMapping 用来封装查找映射关系的功能组建
+	 *
 	 */
 	@Nullable
 	protected HandlerExecutionChain getHandler(HttpServletRequest request) throws Exception {
 		if (this.handlerMappings != null) {
+			// handlerMappings 不同的解析方式
 			for (HandlerMapping mapping : this.handlerMappings) {
 				HandlerExecutionChain handler = mapping.getHandler(request);
 				if (handler != null) {

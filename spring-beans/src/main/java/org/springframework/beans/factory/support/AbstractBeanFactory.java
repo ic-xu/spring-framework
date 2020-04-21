@@ -255,6 +255,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		/**
 		 * Eagerly check singleton cache for manually registered singletons.
 		 * 会先从单列缓存池中查找对象是不是在单列缓存池中
+		 *
+		 * sharedInstance 共享的实例对象
 		 */
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
@@ -305,10 +307,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
+				/** 先标记当前bean 正在被创建*/
 				markBeanAsCreated(beanName);
 			}
 
 			try {
+				/** 获取 bean 的定义信息*/
 				final RootBeanDefinition mbd = getMergedLocalBeanDefinition(beanName);
 
 				/**

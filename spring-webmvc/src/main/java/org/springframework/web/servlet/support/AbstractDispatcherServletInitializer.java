@@ -40,6 +40,8 @@ import org.springframework.web.servlet.FrameworkServlet;
  * Base class for {@link org.springframework.web.WebApplicationInitializer}
  * implementations that register a {@link DispatcherServlet} in the servlet context.
  *
+ * DispatcherServlet　初始化器
+ *
  * <p>Most applications should consider extending the Spring Java config subclass
  * {@link AbstractAnnotationConfigDispatcherServletInitializer}.
  *
@@ -49,6 +51,8 @@ import org.springframework.web.servlet.FrameworkServlet;
  * @author Juergen Hoeller
  * @author Stephane Nicoll
  * @since 3.2
+ *
+ *
  */
 public abstract class AbstractDispatcherServletInitializer extends AbstractContextLoaderInitializer {
 
@@ -57,7 +61,11 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	 */
 	public static final String DEFAULT_SERVLET_NAME = "dispatcher";
 
-
+	/**
+	 * 这里会在这个方法中注册SpringMvc的 DispatcherServlet 实现请求分发
+	 * @param servletContext
+	 * @throws ServletException
+	 */
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
@@ -151,6 +159,9 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	/**
 	 * Specify the servlet mapping(s) for the {@code DispatcherServlet} &mdash;
 	 * for example {@code "/"}, {@code "/app"}, etc.
+	 *
+	 * 获取所有的映射信息
+	 *
 	 * @see #registerDispatcherServlet(ServletContext)
 	 */
 	protected abstract String[] getServletMappings();

@@ -253,8 +253,6 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					newSingleton = true;
 				}
 				catch (IllegalStateException ex) {
-
-
 					/**
 					 *  Has the singleton object implicitly appeared in the meantime ->
 					 * if yes, proceed with it since the exception indicates that state.

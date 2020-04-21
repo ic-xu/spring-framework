@@ -17,7 +17,10 @@ dependencies {
     compile(project(":spring-jdbc"))
     compile(project(":spring-context"))
     compile(project(":spring-aspects"))
+    compile(project(":spring-web"))
+    compile(project(":spring-webmvc"))
     compile group: "mysql",name: "mysql-connector-java",version: "6.0.6"
     compile group: "org.mybatis",name: "mybatis",version: "3.5.4"
     compile group: "org.mybatis",name: "mybatis-spring",version: "2.0.4"
+    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 }
