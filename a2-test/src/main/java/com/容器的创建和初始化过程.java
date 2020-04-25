@@ -1,6 +1,6 @@
 package com;
 
-import com.ext.config.ExtConfig;
+import com.spring2ext.config.ExtConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 

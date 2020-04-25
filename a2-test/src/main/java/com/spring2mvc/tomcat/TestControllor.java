@@ -1,10 +1,10 @@
-package com.mvc.web;
+package com.spring2mvc.tomcat;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class T {
+public class TestControllor {
 
 
 	@GetMapping("/test")

@@ -1,4 +1,4 @@
-package com.aop.aspect;
+package com.spring2aop.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -14,14 +14,14 @@ public class TestAspects {
 		System.out.println("fff");
 	}
 
-	@Pointcut("execution(public String com.aop.test.TestServer.list())") // the pointcut expression
+	@Pointcut("execution(public String com.spring2aop.test.TestServer.list())") // the pointcut expression
 	private void anyOldTransfer() {} // the pointcut signature
 
 	/**
 	 * 返回通知
 	 * joinPoint 参数一定要出现在第一位
 	 */
-	@AfterReturning(value = "com.aop.aspect.TestAspects.anyOldTransfer()",returning = "result")
+	@AfterReturning(value = "com.spring2aop.aspect.TestAspects.anyOldTransfer()",returning = "result")
 	public void methonReturing(JoinPoint joinPoint,String result) {
 		System.err.println("-----"+joinPoint.getSignature().getName()+"--------执行切面--"+result+"-------methonReturing---------");
 	}
@@ -29,7 +29,7 @@ public class TestAspects {
 	/**
 	 * 前置通知
 	 */
-	@Before("com.aop.aspect.TestAspects.anyOldTransfer()")
+	@Before("com.spring2aop.aspect.TestAspects.anyOldTransfer()")
 	public void methonStart() {
 		System.err.println("-------------执行切面---------------methonStart---");
 	}
@@ -37,7 +37,7 @@ public class TestAspects {
 	/**
 	 * 后置通知,无论方法正常结束还是异常结束都调用
 	 */
-	@After("com.aop.aspect.TestAspects.anyOldTransfer()")
+	@After("com.spring2aop.aspect.TestAspects.anyOldTransfer()")
 	public void methonEnd() {
 		System.err.println("-------------执行切面----------------methonEnd--");
 	}
@@ -45,7 +45,7 @@ public class TestAspects {
 	/**
 	 * 异常通知
 	 */
-	@AfterThrowing(value = "com.aop.aspect.TestAspects.anyOldTransfer()",throwing = "e")
+	@AfterThrowing(value = "com.spring2aop.aspect.TestAspects.anyOldTransfer()",throwing = "e")
 	public void methonException(Exception e) {
 		System.err.println("-------------执行切面---------methonException----"+e.getMessage()+"-----");
 	}

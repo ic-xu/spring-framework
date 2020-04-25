@@ -1,4 +1,4 @@
-package com.ext.config;
+package com.spring2ext.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Configuration;
  *  BeanDefinitionRegistryPostProcessor -> BeanFactoryPostProcessor
  *  	-> BeanPostProcessor -> SmartInitializingSingleton -> ApplicationListener
  */
-@ComponentScan("com.ext.*")
+@ComponentScan("com.spring2ext.*")
 @Configuration
 public class ExtConfig {
 }

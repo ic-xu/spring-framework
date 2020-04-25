@@ -1,6 +1,6 @@
-package com.aop.test;
+package com.spring2aop.test;
 
-import com.aop.config.AopConfig;
+import com.spring2aop.config.AopConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Mian {

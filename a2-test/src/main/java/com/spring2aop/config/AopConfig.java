@@ -1,17 +1,11 @@
-package com.aop.config;
+package com.spring2aop.config;
 
 import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.sql.DataSource;
 
 @Configurable
-@ComponentScan("com.aop.*")
+@ComponentScan("com.spring2aop.*")
 @EnableAspectJAutoProxy//开启动态代理
 public class AopConfig {
 

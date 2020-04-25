@@ -1,6 +1,6 @@
-package com.ext;
+package com.spring2ext;
 
-import com.ext.config.ExtConfig;
+import com.spring2ext.config.ExtConfig;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Mian {

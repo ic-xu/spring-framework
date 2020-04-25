@@ -1,4 +1,4 @@
-package com.mvc.web;
+package com.spring2mvc.tomcat;
 
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -23,6 +23,6 @@ public class MyWebApplicationInitializer implements WebApplicationInitializer {
 		DispatcherServlet servlet = new DispatcherServlet(ac);
 		ServletRegistration.Dynamic registration = servletContext.addServlet("app", servlet);
 		registration.setLoadOnStartup(1);
-		registration.addMapping("*.*");
+		registration.addMapping("/*");
 	}
 }

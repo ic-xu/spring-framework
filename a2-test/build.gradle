@@ -24,9 +24,8 @@ dependencies {
     compile group: "org.mybatis",name: "mybatis-spring",version: "2.0.4"
     compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
-//    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-core
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.34'
+    //这里tomcat版本 9.x 是不行的，8.5.x可以，具体不知道为什么
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '8.5.34'
 
-    // https://mvnrepository.com/artifact/org.apache.tomcat.embed/tomcat-embed-jasper
-    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.34'
+    compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '8.5.34'
 }
