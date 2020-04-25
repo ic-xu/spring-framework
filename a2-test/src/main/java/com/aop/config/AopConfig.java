@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 @Configurable
 @ComponentScan("com.aop.*")
 @EnableAspectJAutoProxy//开启动态代理
-@EnableTransactionManagement//开启注解（开启之前必须配置事务管理器）
 public class AopConfig {
 
 
@@ -24,9 +23,9 @@ public class AopConfig {
 	 * @param dataSource
 	 * @return
 	 */
-	@Bean
-	public PlatformTransactionManager platformTransactionManager(DataSource dataSource){
-
-		return new DataSourceTransactionManager(dataSource);
-	}
+//	@Bean
+//	public PlatformTransactionManager platformTransactionManager(DataSource dataSource){
+//
+//		return new DataSourceTransactionManager(dataSource);
+//	}
 }
