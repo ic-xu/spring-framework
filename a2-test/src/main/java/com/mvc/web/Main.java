@@ -8,7 +8,7 @@ public class Main {
 	static void run() throws LifecycleException {
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(8080);
-		tomcat.addWebapp("/app", "D:\\work\\tomcatWorkSpae" );
+		tomcat.addWebapp("/", "D:\\work\\tomcatWorkSpae" );
 		tomcat.start();
 		tomcat.getServer().await();
 	}
