@@ -2,6 +2,7 @@ package com.spring2aop.aspect;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
 import org.springframework.stereotype.Component;
 
 
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class TestAspects {
 
 	public TestAspects(){
-
 		System.out.println("fff");
 	}
 
@@ -51,13 +51,16 @@ public class TestAspects {
 	}
 
 
-//	/**
-//	 * 环绕通知
-//	 */
-//	@Around("com.aop.aspect.TestAspects.anyOldTransfer()")
-//	public void methonAronud() {
-//		System.err.println("-------------执行切面---------------methonAronud---");
-//	}
+	/**
+	 * 环绕通知,需要手动推进方法执行，相当于手动的编写状态。
+	 */
+	@Around("com.spring2aop.aspect.TestAspects.anyOldTransfer()")
+	public void methonAronud(JoinPoint joinPoint) throws Throwable {
+		System.err.println("-------------执行切面---------------methonAronud-1-");
+		((MethodInvocationProceedingJoinPoint)joinPoint).proceed(joinPoint.getArgs());
+
+		System.err.println("-------------执行切面---------------methonAronud--2-");
+	}
 
 
 }

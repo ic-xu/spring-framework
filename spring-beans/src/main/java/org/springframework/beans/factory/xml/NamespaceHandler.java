@@ -65,6 +65,9 @@ public interface NamespaceHandler {
 	 * inside (for example) a {@code <property>} tag.
 	 * <p>Implementations may return {@code null} if they will
 	 * <strong>not</strong> be used in a nested scenario.
+	 *
+	 * 这个方法的作用是用来注册处理自定义文件中的特定的标签
+	 *
 	 * @param element the element that is to be parsed into one or more {@code BeanDefinitions}
 	 * @param parserContext the object encapsulating the current state of the parsing process
 	 * @return the primary {@code BeanDefinition} (can be {@code null} as explained above)

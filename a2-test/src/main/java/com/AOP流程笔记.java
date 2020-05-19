@@ -100,7 +100,7 @@ bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
  *
  *
  * AnnotationAwareAspectJAutoProxyCreator【InstantiationAwareBeanPostProcessor】	的作用：
- * 1）、每一个bean创建之前，调用postProcessBeforeInstantiation()；
+ * 1）、每一个bean创建之前，调用 postProcessBeforeInstantiation()；
  * 		关心MathCalculator和LogAspect的创建
  * 		1）、判断当前bean是否在advisedBeans中（保存了所有需要增强bean）
  * 		2）、判断当前bean是否是基础类型的Advice、Pointcut、Advisor、AopInfrastructureBean，

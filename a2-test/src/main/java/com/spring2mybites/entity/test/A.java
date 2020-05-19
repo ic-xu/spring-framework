@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 public class A {
 
 	@Autowired
-	B b;
+	com.mybites.spring.entity.test.B b;
 
 	public A(){
 		System.out.println("A初始化了");
