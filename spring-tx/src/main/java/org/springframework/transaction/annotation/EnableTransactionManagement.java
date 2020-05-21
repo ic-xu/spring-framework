@@ -178,6 +178,8 @@ public @interface EnableTransactionManagement {
 	 * ignored since Spring's interceptor does not even kick in for such a runtime
 	 * scenario. For a more advanced mode of interception, consider switching this to
 	 * {@link AdviceMode#ASPECTJ}.
+	 *
+	 * 代理的实现方式，默认proxy
 	 */
 	AdviceMode mode() default AdviceMode.PROXY;
 

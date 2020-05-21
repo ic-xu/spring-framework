@@ -42,6 +42,12 @@ public class TransactionManagementConfigurationSelector extends AdviceModeImport
 	 * {@code AspectJ(Jta)TransactionManagementConfiguration} for {@code PROXY}
 	 * and {@code ASPECTJ} values of {@link EnableTransactionManagement#mode()},
 	 * respectively.
+	 *
+	 * 这个方法会给容器导入两个组建（AutoProxyRegistrar，ProxyTransactionManagementConfiguration）
+	 *
+	 * AutoProxyRegistrar：自动代理创建器，会给容器注册 InfrastructureAdvisorAutoProxyCreator ，
+	 * 	他和 AnnotationAwareAspectJAutoProxyCreator差不多的。
+	 * ProxyTransactionManagementConfiguration：给容器中注册事物增强器，
 	 */
 	@Override
 	protected String[] selectImports(AdviceMode adviceMode) {

@@ -1,18 +1,3 @@
-/*
- * Copyright 2002-2020 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 
 package org.springframework.transaction.annotation;
 
@@ -39,6 +24,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 public class ProxyTransactionManagementConfiguration extends AbstractTransactionManagementConfiguration {
 
+	/** 注册一个事物增强器 **/
 	@Bean(name = TransactionManagementConfigUtils.TRANSACTION_ADVISOR_BEAN_NAME)
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public BeanFactoryTransactionAttributeSourceAdvisor transactionAdvisor(
@@ -53,18 +39,22 @@ public class ProxyTransactionManagementConfiguration extends AbstractTransaction
 		return advisor;
 	}
 
+	/** AnnotationTransactionAttributeSource 解析事物的注解类 **/
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionAttributeSource transactionAttributeSource() {
 		return new AnnotationTransactionAttributeSource();
 	}
 
+
+	/** TransactionInterceptor 事物的拦截器，是一个方法拦截器，保存了事物的属性信息，事物管理器扥 **/
 	@Bean
 	@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 	public TransactionInterceptor transactionInterceptor(TransactionAttributeSource transactionAttributeSource) {
 		TransactionInterceptor interceptor = new TransactionInterceptor();
 		interceptor.setTransactionAttributeSource(transactionAttributeSource);
 		if (this.txManager != null) {
+			/** 获取事物管理器 **/
 			interceptor.setTransactionManager(this.txManager);
 		}
 		return interceptor;

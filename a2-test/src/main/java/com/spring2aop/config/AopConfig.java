@@ -3,10 +3,12 @@ package com.spring2aop.config;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configurable
 @ComponentScan("com.spring2aop.*")
 @EnableAspectJAutoProxy//开启动态代理
+@EnableTransactionManagement//开启事物管理器支持
 public class AopConfig {
 
 

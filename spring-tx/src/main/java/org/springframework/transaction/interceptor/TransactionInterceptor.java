@@ -49,6 +49,8 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @see org.springframework.aop.framework.ProxyFactoryBean
  * @see org.springframework.aop.framework.ProxyFactory
  */
+
+/**  spring中的事物拦截器 */
 @SuppressWarnings("serial")
 public class TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor, Serializable {
 
@@ -93,9 +95,17 @@ public class TransactionInterceptor extends TransactionAspectSupport implements 
 		// Work out the target class: may be {@code null}.
 		// The TransactionAttributeSource should be passed the target class
 		// as well as the method, which may be from an interface.
+		/** 获取目标对象方法 */
 		Class<?> targetClass = (invocation.getThis() != null ? AopUtils.getTargetClass(invocation.getThis()) : null);
 
 		// Adapt to TransactionAspectSupport's invokeWithinTransaction...
+		/**
+		 * invokeWithinTransaction方法整体分为四块
+		 * 1、初始化事务支持，根据注解的属性配置，处理事务传播机制、为事务创建连接、为连接设置事务隔离级别等；
+		 * 2、调用目标方法；
+		 * 3、方法执行异常完成事务回滚；
+		 * 4、方法执行成功完成事务提交。
+		 */
 		return invokeWithinTransaction(invocation.getMethod(), targetClass, invocation::proceed);
 	}
 
