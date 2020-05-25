@@ -96,6 +96,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	/**
 	 * Whether the given {@linkplain MethodParameter method parameter} is
 	 * supported by any registered {@link HandlerMethodArgumentResolver}.
+	 * 返回可解析当前参数的解析器。
 	 */
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {

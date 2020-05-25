@@ -185,8 +185,10 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	 */
 	@Nullable
 	protected Object doInvoke(Object... args) throws Exception {
+		/** 设置方法的访问权限 */
 		ReflectionUtils.makeAccessible(getBridgedMethod());
 		try {
+			/** 利用反射执行目标方法*/
 			return getBridgedMethod().invoke(getBean(), args);
 		}
 		catch (IllegalArgumentException ex) {
