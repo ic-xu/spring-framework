@@ -1,4 +1,4 @@
-package com;
+package com.springboot;
 
 
 import com.spring2mvc.tomcat.Main;

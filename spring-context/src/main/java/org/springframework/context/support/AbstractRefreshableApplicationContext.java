@@ -138,6 +138,8 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			closeBeanFactory();
 		}
 		try {
+
+			//创建工厂对象，完成工厂对象的创建
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 
@@ -147,6 +149,7 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			customizeBeanFactory(beanFactory);
 
 			/**
+			 * 把java类转换成beanDefinition 对象放到beanDefinitionMap 中
 			 * 调用子类XmlWebApplicationContext的loadBeanDefinitions方法
 			 */
 			loadBeanDefinitions(beanFactory);

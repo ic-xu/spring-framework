@@ -51,6 +51,8 @@ package org.springframework.core.env;
  * @see SystemEnvironmentPropertySource
  * @see org.springframework.web.context.support.StandardServletEnvironment
  */
+
+//在系统创建的时候提前把相应的属性加载到StandardEnvronment 中，方便后面使用
 public class StandardEnvironment extends AbstractEnvironment {
 
 	/** System environment property source name: {@value}. */

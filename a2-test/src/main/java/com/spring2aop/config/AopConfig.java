@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configurable
 @ComponentScan("com.spring2aop.*")
 @EnableAspectJAutoProxy//开启动态代理
-@EnableTransactionManagement//开启事物管理器支持
+//@EnableTransactionManagement//开启事物管理器支持
 public class AopConfig {
 
 

@@ -567,39 +567,38 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		synchronized (this.startupShutdownMonitor) {
 			/**
 			 *  Prepare this context for refreshing.
-			 *  预刷新工作
+			 *  预刷新工作,创建容器的准备工作
 			 */
 			prepareRefresh();
 
 			/**
 			 * Tell the subclass to refresh the internal bean factory.
-			 * 实际是调用子类AbstractRefreshableApplicationContext中的refreshBeanFactory方法
+			 * 获取新的工厂，有可能工厂已经创建好了，所以这里要判断一下。
 			 *
+			 * 实际是调用子类AbstractRefreshableApplicationContext中的refreshBeanFactory方法
 			 * 获取刷新后的内部Bean工厂，obtainFreshBeanFactory方法为内部bean工厂重新生成id，设置可循环依赖和名字覆盖
-			 * 并返回bean工厂,(在spring-web中还会生成xml bean阅读器和 beanDefinition 加载器加载xml中定义的bean)
+			 * 并返回bean工厂,(在spring-web中还会生成xml bean阅读器和 beanDefinition 加载器加载xml中定义的bean,并把java类信息转化为
+			 * BeacDefinition 对象放到集合中)
 			 *
 			 */
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			/**
 			 * Prepare the bean factory for use in this context.
-			 * beanFactory 预准备工作，主要完成 beanFactory 的一些属性设置（如设置类加载器、
-			 * 		表达式解析器、添加部分的后置处理器、设置一些忽略的自动装配的接口）
+			 * 准备 beanFactory 预准备工作，主要完成 beanFactory 的一些属性设置（如设置类加载器、表达式解析器、添加部分的后置处理器、设置一些忽略的自动装配的接口）
 			 */
 			prepareBeanFactory(beanFactory);
 
 			try {
 				/**
 				 * Allows post-processing of the bean factory in context subclasses.
-				 * 允许在子类中调用工厂后置处理器，在beanFactory 创建并预准备完成之后调用后置处理器完成自定义操作
+				 * 模板方法，允许在子类中调用工厂后置处理器，在beanFactory 创建并预准备完成之后调用后置处理器完成自定义操作
 				 */
 				postProcessBeanFactory(beanFactory);
 
 				/**
 				 * Invoke factory processors registered as beans in the context.
-				 * 注册 BeanFactory 的后置处理器
-				 *
-				 * 执行 BeanFactory 后置处理器 BeanFactoryPostProcessor，
+				 * 注册 和执行 BeanFactory 后置处理器 BeanFactoryPostProcessor，
 				 * 	BeanFactoryPostProcessor 在BeanFactory 标准初始化之后执行的 ，
 				 * 	它有个子接口 BeanDefinitionRegistryPostProcessor，它们的执行时机是不一样的
 				 *
@@ -714,7 +713,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		 *  Validate that all properties marked as required are resolvable:
 		 *  see ConfigurablePropertyResolver#setRequiredProperties
 		 *
-		 *  校验属性：检验属性的合法，验证所有标记为必需的属性都是可解析的
+		 * getEnvironment()，创建环境对象，StandardEnvironment 对象，这里面存储着属性信息
+		 *
+		 *  validateRequiredProperties()，校验属性：检验属性的合法，验证所有标记为必需的属性都是可解析的
 		 *  具体参见 ConfigurablePropertyResolver#setRequiredProperties
 		 */
 		getEnvironment().validateRequiredProperties();

@@ -68,6 +68,9 @@ package org.springframework.core.env;
  * @see org.springframework.context.ConfigurableApplicationContext#setEnvironment
  * @see org.springframework.context.support.AbstractApplicationContext#createEnvironment
  */
+
+
+//在系统创建的时候提前把相应的属性加载到StandardEnvronment 中，方便后面使用
 public interface Environment extends PropertyResolver {
 
 	/**

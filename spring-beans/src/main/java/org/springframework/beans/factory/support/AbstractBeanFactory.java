@@ -347,6 +347,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 				 * 创建bean,并在getSingleton()方法中
 				 */
 				if (mbd.isSingleton()) {
+
+					/**
+					 * 创建bean 并放在单列缓存池中
+					 */
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							/**
@@ -370,6 +374,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					Object prototypeInstance = null;
 					try {
 						beforePrototypeCreation(beanName);
+
+						/**
+						 * 创建bean
+						 */
 						prototypeInstance = createBean(beanName, mbd, args);
 					}
 					finally {
