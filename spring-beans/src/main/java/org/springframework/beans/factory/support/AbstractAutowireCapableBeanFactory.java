@@ -1158,11 +1158,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
 					/**
-					 * 执行后置处理器的BeforeInstantiation方法，如果返回的结果不为null，就执行后置处理
+					 * 执行bean 的实例化后置处理器的前置 BeforeInstantiation方法，如果返回的结果不为null，就执行后置处理
 					 * 其的AfterInitialization方法,
 					 */
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
+						/**
+						 * 也是bean 的初始化前置方法 ，在bean的 初始化方法调用 之后工作
+						 */
 						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
 					}
 				}
@@ -1433,6 +1436,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
+		/**
+		 * 调用bean的实例化后置处理器的后置方法
+		 */
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
@@ -1846,7 +1852,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
 			/**
-			 *调用bean的类的后置处理器的 初始化前置postProcessBeforeInitialization()法
+			 *调用bean的类的后置处理器的 初始化方法调用前的前置postProcessBeforeInitialization()法
 			 * 但是后置处理器不能返回null,不然后面的处理器就不能执行
 			 */
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
@@ -1868,7 +1874,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
 			/**
-			 * 执行后置处理器的初始化后置postProcessAfterInitialization()方法,
+			 * 执行初始化方法执行的后置处理器的初始化后置postProcessAfterInitialization()方法,
 			 *  但是后置处理器不能返回null,不然后面的处理器就不能执行
 			 */
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);

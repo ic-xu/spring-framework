@@ -230,6 +230,7 @@ final class PostProcessorRegistrationDelegate {
 		 * 拿到所有实现了BeanPostProcessor 接口的类的类名，而BeanPostProcessor是后置处理器的根接口
 		 *
 		 * BeanPostProcessor 的子接口有很多，每个子接口的执行顺序不一样，如：
+		 *
 		 * DestructionAwareBeanPostProcessor ：
 		 * InstantiationAwareBeanPostProcessor：
 		 * MergedBeanDefinitionPostProcessor：

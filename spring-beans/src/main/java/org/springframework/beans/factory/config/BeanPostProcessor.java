@@ -46,14 +46,23 @@ import org.springframework.lang.Nullable;
  * programmatically registered post-processors. Furthermore, the
  * {@link org.springframework.core.annotation.Order @Order} annotation is not
  * taken into account for {@code BeanPostProcessor} beans.
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * BeanPostProcessor 的子接口有很多，每个子接口的执行顺序不一样，如：
+ * DestructionAwareBeanPostProcessor ：
+ * InstantiationAwareBeanPostProcessor：
+ * MergedBeanDefinitionPostProcessor：1
+ * SmartInstantiationAwareBeanPostProcessor:2
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 10.10.2003
  * @see InstantiationAwareBeanPostProcessor
  * @see DestructionAwareBeanPostProcessor
  * @see ConfigurableBeanFactory#addBeanPostProcessor
  * @see BeanFactoryPostProcessor
+ * @since 10.10.2003
  */
 public interface BeanPostProcessor {
 
@@ -63,15 +72,15 @@ public interface BeanPostProcessor {
 	 * or a custom init-method). The bean will already be populated with property values.
 	 * The returned bean instance may be a wrapper around the original.
 	 * <p>The default implementation returns the given {@code bean} as-is.
-	 *
+	 * <p>
 	 * 实例化、依赖注入完毕，在调用显示的 初始化 之前 完成一些定制的初始化任务
 	 * 注意：方法返回值不能为null
 	 * 如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
 	 * 因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 * <p>
+	 * 在bean的 初始化方法调用 之前工作
 	 *
-	 * 	在bean的 初始化方法调用 之前工作
-	 *
-	 * @param bean the new bean instance
+	 * @param bean     the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;
 	 * if {@code null}, no subsequent BeanPostProcessors will be invoked
@@ -96,16 +105,15 @@ public interface BeanPostProcessor {
 	 * {@link InstantiationAwareBeanPostProcessor#postProcessBeforeInstantiation} method,
 	 * in contrast to all other {@code BeanPostProcessor} callbacks.
 	 * <p>The default implementation returns the given {@code bean} as-is.
+	 * <p>
+	 * 实例化、依赖注入、初始化完毕时执行
+	 * 注意：方法返回值不能为null
+	 * 如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
+	 * 因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
+	 * <p>
+	 * 在bean的 初始化方法调用 之后工作
 	 *
-	 *  实例化、依赖注入、初始化完毕时执行
-	 * 	注意：方法返回值不能为null
-	 * 	如果返回null那么在后续初始化方法将报空指针异常或者通过getBean()方法获取不到bena实例对象
-	 * 	因为后置处理器从Spring IoC容器中取出bean实例对象没有再次放回IoC容器中
-	 *
-	 * 	在bean的 初始化方法调用 之后工作
-	 *
-	 *
-	 * @param bean the new bean instance
+	 * @param bean     the new bean instance
 	 * @param beanName the name of the bean
 	 * @return the bean instance to use, either the original or a wrapped one;
 	 * if {@code null}, no subsequent BeanPostProcessors will be invoked

@@ -612,7 +612,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 				/**
 				 * Register bean processors that intercept bean creation.
-				 * 注册拦截Bean创建的Bean处理器。
+				 * 注册Bean处理器用来拦截Bean的创建工作。
 				 *
 				 * 注册后置处理器的大致逻辑是：
 				 * 　　1.获取所有的 BeanPostProcessor

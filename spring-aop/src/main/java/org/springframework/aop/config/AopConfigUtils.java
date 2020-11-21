@@ -114,6 +114,13 @@ public abstract class AopConfigUtils {
 		}
 	}
 
+	/**
+	 *  aop 需要走到这个步骤的方法里面注册组件
+	 * @param cls
+	 * @param registry
+	 * @param source
+	 * @return
+	 */
 	@Nullable
 	private static BeanDefinition registerOrEscalateApcAsRequired(
 			Class<?> cls, BeanDefinitionRegistry registry, @Nullable Object source) {

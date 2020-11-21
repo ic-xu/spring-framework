@@ -75,6 +75,10 @@ public class AnnotationAwareAspectJAutoProxyCreator extends AspectJAwareAdvisorA
 		this.aspectJAdvisorFactory = aspectJAdvisorFactory;
 	}
 
+	/**
+	 * 相当于重新包装了一下beanFactory，创建aspectJAdvisorsBuilder，方便下面的后置处理器执行。
+	 * @param beanFactory
+	 */
 	@Override
 	protected void initBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		super.initBeanFactory(beanFactory);
